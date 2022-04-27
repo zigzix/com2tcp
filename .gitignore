@@ -1,2 +1,6 @@
 com2tcp.aps
 com2tcp.vcxproj.user
+.vs
+Debug
+Release
+x64
