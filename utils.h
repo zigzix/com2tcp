@@ -146,6 +146,7 @@ class ComParams
     BOOL SetStopBits(const char *pStopBits);
     void SetIgnoreDSR(BOOL val) { ignoreDSR = val; }
     void SetConnectDTR(BOOL val) { connectDTR = val; }
+    void SetDisableHandshake(BOOL val) { disableHandshake = val; }
 
     static const char *ParityStr(int parity);
     static const char *StopBitsStr(int stopBits);
@@ -161,6 +162,7 @@ class ComParams
     int StopBits() const { return stopBits; }
     BOOL IgnoreDSR() const { return ignoreDSR; }
     BOOL ConnectDTR() const { return connectDTR; }
+    BOOL DisableHandshake() const { return disableHandshake; }
 
   private:
     long baudRate;
@@ -169,6 +171,7 @@ class ComParams
     int stopBits;
     BOOL ignoreDSR;
     BOOL connectDTR;
+    BOOL disableHandshake;
 };
 ///////////////////////////////////////////////////////////////
 

@@ -564,10 +564,10 @@ static HANDLE OpenC0C(const char *pPath, const ComParams &comParams)
   dcb.fOutxCtsFlow = FALSE;
   dcb.fOutxDsrFlow = FALSE;
   dcb.fDsrSensitivity = !comParams.IgnoreDSR();
-  dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
-  dcb.fDtrControl = comParams.ConnectDTR() ? DTR_CONTROL_DISABLE : DTR_CONTROL_ENABLE;
+  dcb.fRtsControl = comParams.DisableHandshake() ? RTS_CONTROL_DISABLE : RTS_CONTROL_HANDSHAKE;
+  dcb.fDtrControl = comParams.DisableHandshake() ? DTR_CONTROL_DISABLE : DTR_CONTROL_ENABLE;
   dcb.fOutX = FALSE;
-  dcb.fInX = TRUE;
+  dcb.fInX = comParams.DisableHandshake() ? FALSE : TRUE;
   dcb.XonChar = 0x11;
   dcb.XoffChar = 0x13;
   dcb.XonLim = 100;
@@ -859,6 +859,7 @@ static void Usage(const char *pProgName)
   fprintf(stderr, "                            while DSR is OFF).\n");
   fprintf(stderr, "    --connect-dtr         - set DTR to ON/OFF on opening/closing connection to\n");
   fprintf(stderr, "                            host.\n");
+  fprintf(stderr, "    --disable-handshake   - disable hardware/software handshaking.\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "    The value d[efault] above means to use current COM port settings.\n");
   fprintf(stderr, "\n");
@@ -894,6 +895,12 @@ int main(int argc, char* argv[])
       pArgs++;
       argc--;
     } else
+    if (!strcmp(*pArgs, "--disable-handshake")) {
+        pArgs++;
+        argc--;
+        comParams.SetDisableHandshake(TRUE);
+    }
+    else
     if (!strcmp(*pArgs, "--ignore-dsr")) {
       pArgs++;
       argc--;
